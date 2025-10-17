@@ -1,0 +1,14 @@
+name: terraform-ci
+on: [push, pull_request]
+jobs:
+  tf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - run: terraform fmt -check
+      - run: terraform init -backend=false
+      - run: terraform validate
+      - uses: terraform-linters/setup-tflint@v4
+      - run: tflint --init && tflint
+      - uses: gitleaks/gitleaks-action@v2

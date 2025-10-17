@@ -1,0 +1,23 @@
+title = "Detect public SSH keys in Terraform"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "ssh-public-key-terraform"
+description = "Public SSH key found in Terraform sources"
+# Matches lines containing an OpenSSH public key (rsa, ed25519, dss, ecdsa variants).
+# We use a decent base64 length threshold to avoid false positives.
+regex = '''ssh-(?:rsa|ed25519|dss|ecdsa(?:-sha2-nistp(?:256|384|521))?)\s+[A-Za-z0-9+/]{80,}={0,3}(?:\s+[^\r\n]*)?'''
+# Only look inside Terraform-related files
+path = '''(?i)\.(tf|tfvars|tf\.json)$'''
+# Optional: ignore typical example/test directories if you don't want them to fail builds
+
+[[rules]]
+id = "shadow-encrypted-passwords"
+description = "shadow encrypted passwords"
+# Matches lines containing an OpenSSH public key (rsa, ed25519, dss, ecdsa variants).
+# We use a decent base64 length threshold to avoid false positives.
+regex = '''\$\d\$.+'''
+# Only look inside Terraform-related files
+path = '''(?i)\.(tf|tfvars|tf\.json)$'''
