@@ -8,13 +8,13 @@ resource "proxmox_vm_qemu" "pxe-example" {
   balloon          = 0
   bios             = "seabios"
   tags = join(",", [
-            for t in each.value["tags"] : t
-          ])
+    for t in each.value["tags"] : t
+  ])
   cpu {
     type    = each.value.cpu.type
     sockets = each.value.cpu.sockets
     cores   = each.value.cpu.cores
-    numa = true
+    numa    = true
   }
   define_connection_info = true
   force_create           = false
@@ -57,9 +57,9 @@ resource "proxmox_vm_qemu" "pxe-example" {
     version      = "v1.0"
     serial       = "ABC123"
   }
-   lifecycle {
+  lifecycle {
     ignore_changes = [
-      disks,default_ipv4_address,ssh_host,ssh_port,vm_state,
+      disks, default_ipv4_address, ssh_host, ssh_port, vm_state,
     ]
   }
 }

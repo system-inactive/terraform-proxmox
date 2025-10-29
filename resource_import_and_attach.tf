@@ -1,19 +1,19 @@
 resource "null_resource" "import_and_attach" {
   for_each   = proxmox_vm_qemu.pxe-example
-  depends_on = [ proxmox_vm_qemu.pxe-example ]
+  depends_on = [proxmox_vm_qemu.pxe-example]
 
   #proxmox_vm_qemu.pxe-example
 
-   triggers = {
-    vmid        = tostring(each.value.vmid)
-    import_from = var.VMs[each.key].import_from
+  triggers = {
+    vmid         = tostring(each.value.vmid)
+    import_from  = var.VMs[each.key].import_from
     force_import = var.VMs[each.key].force_import
-    storage     = var.VMs[each.key].target_storage
-    disk_sha    = replace(trimspace(tostring(try(data.external.sha[each.key].result.sha, ""))), "\n","")
+    storage      = var.VMs[each.key].target_storage
+    disk_sha     = replace(trimspace(tostring(try(data.external.sha[each.key].result.sha, ""))), "\n", "")
   }
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-euo", "pipefail", "-c"]
-    command = <<-EOT
+    command     = <<-EOT
       SSH='ssh -o StrictHostKeyChecking=no '"${var.pve_ssh_user}@${var.pve_host}"' sudo'
       TARGET_NODE="${var.VMs[each.key].target_node}"
       STORAGE="${var.VMs[each.key].target_storage}"
