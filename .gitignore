@@ -2,7 +2,6 @@
 *.tfstate
 *.tfstate.*
 .terraform/
-
 # Terraform CLI configuration files
 .terraformrc
 terraform.rc
@@ -32,3 +31,7 @@ override.tf.json
 .vscode/
 
 *.log
+*.lastimage
+*.DS_Store
+**/.DS_Store
+*.sh
