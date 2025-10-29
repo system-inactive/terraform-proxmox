@@ -7,14 +7,18 @@ resource "proxmox_vm_qemu" "pxe-example" {
   automatic_reboot = false
   balloon          = 0
   bios             = "seabios"
+  tags = join(",", [
+    for t in each.value["tags"] : t
+  ])
   cpu {
     type    = each.value.cpu.type
     sockets = each.value.cpu.sockets
     cores   = each.value.cpu.cores
+    numa    = true
   }
   define_connection_info = true
   force_create           = false
-  hotplug                = "disk,usb,network"
+  hotplug                = "disk,usb,network,memory"
   kvm                    = true
   memory                 = each.value.memory
   onboot                 = true
@@ -27,8 +31,8 @@ resource "proxmox_vm_qemu" "pxe-example" {
   full_clone             = false
   os_type                = "cloud-init"
   disks {
-    scsi {
-      scsi1 {
+    ide {
+      ide0 {
         cdrom {
           iso = proxmox_cloud_init_disk.ci[each.key].id
         }
@@ -52,5 +56,10 @@ resource "proxmox_vm_qemu" "pxe-example" {
     sku          = md5(each.key)
     version      = "v1.0"
     serial       = "ABC123"
+  }
+  lifecycle {
+    ignore_changes = [
+      disks, default_ipv4_address, ssh_host, ssh_port, vm_state,
+    ]
   }
 }
