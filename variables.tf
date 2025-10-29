@@ -29,11 +29,11 @@ variable "VMs" {
     disk_size      = optional(string, "10G")
     memory         = optional(number, 2)
     #disk            = number
-    username    = string
-    passwd      = string
-    target_node = string
-    ssh_key     = list(string)
-    tags = list(string)
+    username     = string
+    passwd       = string
+    target_node  = string
+    ssh_key      = list(string)
+    tags         = list(string)
     force_import = optional(bool, false) # Forcing import disk image
     cpu = object({
       cores   = number
@@ -76,7 +76,7 @@ variable "VMs" {
       passwd         = "password"
       target_node    = "pve"
       ssh_key        = ["ssh_key1", "ssh_key.."]
-      tags =[""]
+      tags           = [""]
       force_import   = false
       cpu = {
         cores   = 1
@@ -84,12 +84,12 @@ variable "VMs" {
         type    = "host"
       }
       network = {
-        id        = 0
-        bridge    = "vrbr0"
-        firewall  = true
-        link_down = false
-        model     = "virtio"
-        tag       = 0
+        id           = 0
+        bridge       = "vrbr0"
+        firewall     = true
+        link_down    = false
+        model        = "virtio"
+        tag          = 0
         force_import = false
       }
     }
