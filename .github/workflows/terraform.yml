@@ -16,6 +16,8 @@ jobs:
         run: terraform init -backend=false
       - name: Terraform validate
         run: terraform validate
+      - name: Terraform test
+        run: terraform test
       - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v4
       - name: TFLint init and run
